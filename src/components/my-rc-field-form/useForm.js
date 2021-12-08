@@ -1,4 +1,4 @@
-import {useRef} from "react";
+import { useRef } from "react";
 
 class FormStore {
   constructor() {
@@ -32,7 +32,7 @@ class FormStore {
 
   // get
   getFieldsValue = () => {
-    return {...this.store};
+    return { ...this.store };
   };
   getFieldValue = (name) => {
     return this.store[name];
@@ -62,7 +62,7 @@ class FormStore {
     return err;
   };
   submit = () => {
-    const {onFinish, onFinishFailed} = this.callbacks;
+    const { onFinish, onFinishFailed } = this.callbacks;
     let err = this.validate();
 
     if (err.length > 0) {
