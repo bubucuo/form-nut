@@ -1,24 +1,21 @@
-import {useImperativeHandle} from "react";
-import FieldContext from "./Context";
 import useForm from "./useForm";
+import FiledContext from "./FiledContext";
 
-export default function Form({form, children, onFinish, onFinishFailed}, ref) {
+export default function Form({ children, form, onFinish, onFinishFailed }) {
   const [formInstance] = useForm(form);
 
-  useImperativeHandle(ref, () => formInstance);
-  formInstance.setCallbacks({
-    onFinish,
-    onFinishFailed,
-  });
+  formInstance.setCallbacks({ onFinish, onFinishFailed });
+
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
         formInstance.submit();
-      }}>
-      <FieldContext.Provider value={formInstance}>
+      }}
+    >
+      <FiledContext.Provider value={formInstance}>
         {children}
-      </FieldContext.Provider>
+      </FiledContext.Provider>
     </form>
   );
 }

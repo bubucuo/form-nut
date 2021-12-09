@@ -1,13 +1,11 @@
-import { useRef } from "react";
+import React from "react";
 
 class FormStore {
   constructor() {
     this.store = {}; // 状态库
-    // 组件实例
     this.fieldEntities = [];
 
-    // 记录回调
-    this.callbacks = {};
+    this.callbacks = {}; // 存储回调
   }
 
   setCallbacks = (newCallbacks) => {
@@ -17,36 +15,43 @@ class FormStore {
     };
   };
 
-  // 有注册，得有取消注册，
-  // 订阅和取消订阅也是要成对出现的
-  registerFieldEntities = (entity) => {
-    this.fieldEntities.push(entity);
+  //  注册与取消注册，监听与取消监听  都要成对出现
+  setFieldEntities = (field) => {
+    this.fieldEntities.push(field);
 
     return () => {
-      this.fieldEntities = this.fieldEntities.filter(
-        (_entity) => _entity != entity
-      );
-      delete this.store[entity.props.name];
+      // 取消注册
+      this.fieldEntities = this.fieldEntities.filter((item) => item !== field);
+      delete this.store[field.props.name];
     };
   };
 
-  // get
+  // get all
   getFieldsValue = () => {
     return { ...this.store };
   };
+
+  // get some value
   getFieldValue = (name) => {
     return this.store[name];
   };
-  // set
+
+  //   name: value
   setFieldsValue = (newStore) => {
-    // name: value
-    // 1. 修改状态库
+    // update store
     this.store = {
       ...this.store,
       ...newStore,
     };
 
-    // 2. 更新组件
+    // update 组件
+    // update field onStoreChange
+    //
+
+    // this.fieldEntities.forEach((field) => {
+    //   field.onStoreChange();
+    // })
+
     this.fieldEntities.forEach((entity) => {
       Object.keys(newStore).forEach((k) => {
         if (k === entity.props.name) {
@@ -58,39 +63,39 @@ class FormStore {
 
   validate = () => {
     let err = [];
-    // todo 校验
+
+    // todo 检验 rules
+
     return err;
   };
   submit = () => {
     const { onFinish, onFinishFailed } = this.callbacks;
     let err = this.validate();
 
-    if (err.length > 0) {
-      // 失败 onFinishFailed
-      onFinishFailed(this.getFieldsValue(), err);
-    } else {
-      // 成功 onFinish()
+    if (err.length === 0) {
       onFinish(this.getFieldsValue());
+    } else {
+      onFinishFailed(err, this.getFieldsValue());
     }
-    console.log("omg"); //sy-log
-    // 校验成功 执行onFinish
-    // 校验失败 执行onFinishFailed
   };
 
   getForm = () => {
     return {
-      getFieldsValue: this.getFieldsValue,
       getFieldValue: this.getFieldValue,
+      getFieldsValue: this.getFieldsValue,
       setFieldsValue: this.setFieldsValue,
-      registerFieldEntities: this.registerFieldEntities,
+      setFieldEntities: this.setFieldEntities,
       submit: this.submit,
       setCallbacks: this.setCallbacks,
     };
   };
 }
 
-export default function useForm(form) {
-  const formRef = useRef();
+function useForm(form) {
+  // 组件初次加载的时候，初始化一个状态仓库
+  // 在组件卸载前，都要用到同一个状态仓库
+
+  const formRef = React.useRef();
 
   if (!formRef.current) {
     if (form) {
@@ -103,3 +108,5 @@ export default function useForm(form) {
 
   return [formRef.current];
 }
+
+export default useForm;
