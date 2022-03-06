@@ -11,7 +11,7 @@ class FormStore {
   }
 
   setCallbacks = (callbacks) => {
-    this.callbacks = { ...callbacks, ...this.callbacks };
+    this.callbacks = { ...this.callbacks, ...callbacks };
   };
 
   // 注册实例(forceUpdate)
@@ -40,8 +40,8 @@ class FormStore {
   setFieldsValue = (newStore) => {
     // 1. update store
     this.store = {
-      ...newStore,
       ...this.store,
+      ...newStore,
     };
     // 2. update Field
     this.fieldEntities.forEach((entity) => {
