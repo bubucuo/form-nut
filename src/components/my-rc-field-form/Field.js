@@ -1,41 +1,36 @@
 import React, { Component } from "react";
-import FiledContext from "./FiledContext";
-
+import FieldContext from "./FieldContext";
 export default class Field extends Component {
-  static contextType = FiledContext;
+  static contextType = FieldContext;
+
+  componentDidMount() {
+    this.unregister = this.context.registerFieldEntities(this);
+  }
+
+  componentWillUnmount() {
+    this.unregister();
+  }
 
   onStoreChange = () => {
     this.forceUpdate();
   };
 
-  componentDidMount() {
-    this.unsetFieldEntities = this.context.setFieldEntities(this);
-  }
-
-  componentWillUnmount() {
-    this.unsetFieldEntities();
-  }
-
   getControlled = () => {
     const { getFieldValue, setFieldsValue } = this.context;
-
     const { name } = this.props;
     return {
-      value: getFieldValue(name),
+      value: getFieldValue(name), //"omg", // get state
       onChange: (e) => {
         const newValue = e.target.value;
-        console.log("newValue", newValue); //sy-log
+        // set state
         setFieldsValue({ [name]: newValue });
       },
     };
   };
   render() {
-    console.log("render"); //sy-log
-    const returnChildNode = React.cloneElement(
-      this.props.children,
-      this.getControlled()
-    );
+    const { children } = this.props;
 
+    const returnChildNode = React.cloneElement(children, this.getControlled());
     return returnChildNode;
   }
 }

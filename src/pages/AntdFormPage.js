@@ -44,6 +44,9 @@ export default class AntdFormPage extends Component {
   }
 }
 
+// Antd 3 Form HOC
+// todo antd4 form store (state、)
+
 // export default function AntdFormPage(props) {
 //   const [form] = Form.useForm();
 //   const onFinish = (val) => {

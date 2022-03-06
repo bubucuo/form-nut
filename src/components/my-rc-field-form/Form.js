@@ -1,11 +1,19 @@
+import React from "react";
+import FieldContext from "./FieldContext";
 import useForm from "./useForm";
-import FiledContext from "./FiledContext";
 
-export default function Form({ children, form, onFinish, onFinishFailed }) {
+export default function Form(
+  { children, form, onFinish, onFinishFailed },
+  ref
+) {
   const [formInstance] = useForm(form);
 
-  formInstance.setCallbacks({ onFinish, onFinishFailed });
+  React.useImperativeHandle(ref, () => formInstance);
 
+  formInstance.setCallbacks({
+    onFinish,
+    onFinishFailed,
+  });
   return (
     <form
       onSubmit={(e) => {
@@ -13,9 +21,9 @@ export default function Form({ children, form, onFinish, onFinishFailed }) {
         formInstance.submit();
       }}
     >
-      <FiledContext.Provider value={formInstance}>
+      <FieldContext.Provider value={formInstance}>
         {children}
-      </FiledContext.Provider>
+      </FieldContext.Provider>
     </form>
   );
 }

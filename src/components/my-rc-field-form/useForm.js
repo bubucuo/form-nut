@@ -1,57 +1,49 @@
-import React from "react";
+// 定义状态管理库
+
+import { useRef } from "react";
 
 class FormStore {
   constructor() {
-    this.store = {}; // 状态库
+    this.store = {}; // 状态值： name: value
     this.fieldEntities = [];
 
-    this.callbacks = {}; // 存储回调
+    this.callbacks = {};
   }
 
-  setCallbacks = (newCallbacks) => {
-    this.callbacks = {
-      ...this.callbacks,
-      ...newCallbacks,
-    };
+  setCallbacks = (callbacks) => {
+    this.callbacks = { ...callbacks, ...this.callbacks };
   };
 
-  //  注册与取消注册，监听与取消监听  都要成对出现
-  setFieldEntities = (field) => {
-    this.fieldEntities.push(field);
+  // 注册实例(forceUpdate)
+  // 注册与取消注册
+  // 订阅与取消订阅
+  registerFieldEntities = (entity) => {
+    this.fieldEntities.push(entity);
 
     return () => {
-      // 取消注册
-      this.fieldEntities = this.fieldEntities.filter((item) => item !== field);
-      delete this.store[field.props.name];
+      this.fieldEntities = this.fieldEntities.filter((item) => item !== entity);
+      delete this.store[entity.props.name];
     };
   };
 
-  // get all
+  // get
   getFieldsValue = () => {
     return { ...this.store };
   };
 
-  // get some value
   getFieldValue = (name) => {
     return this.store[name];
   };
 
-  //   name: value
+  // set
+  // password: 123
   setFieldsValue = (newStore) => {
-    // update store
+    // 1. update store
     this.store = {
-      ...this.store,
       ...newStore,
+      ...this.store,
     };
-
-    // update 组件
-    // update field onStoreChange
-    //
-
-    // this.fieldEntities.forEach((field) => {
-    //   field.onStoreChange();
-    // })
-
+    // 2. update Field
     this.fieldEntities.forEach((entity) => {
       Object.keys(newStore).forEach((k) => {
         if (k === entity.props.name) {
@@ -63,39 +55,54 @@ class FormStore {
 
   validate = () => {
     let err = [];
+    // todo 校验
+    // 简版校验
 
-    // todo 检验 rules
+    this.fieldEntities.forEach((entity) => {
+      const { name, rules } = entity.props;
+
+      const value = this.getFieldValue(name);
+      let rule = rules[0];
+
+      if (rule && rule.required && (value === undefined || value === "")) {
+        err.push({ [name]: rule.message, value });
+      }
+    });
 
     return err;
   };
+
   submit = () => {
-    const { onFinish, onFinishFailed } = this.callbacks;
+    console.log("submit"); //sy-log
+
     let err = this.validate();
+    // 提交
+    const { onFinish, onFinishFailed } = this.callbacks;
 
     if (err.length === 0) {
+      // 校验通过
       onFinish(this.getFieldsValue());
     } else {
+      // 校验不通过
       onFinishFailed(err, this.getFieldsValue());
     }
   };
 
   getForm = () => {
     return {
-      getFieldValue: this.getFieldValue,
       getFieldsValue: this.getFieldsValue,
+      getFieldValue: this.getFieldValue,
       setFieldsValue: this.setFieldsValue,
-      setFieldEntities: this.setFieldEntities,
+      registerFieldEntities: this.registerFieldEntities,
       submit: this.submit,
       setCallbacks: this.setCallbacks,
     };
   };
 }
 
-function useForm(form) {
-  // 组件初次加载的时候，初始化一个状态仓库
-  // 在组件卸载前，都要用到同一个状态仓库
-
-  const formRef = React.useRef();
+export default function useForm(form) {
+  // 存值，在组件卸载之前指向的都是同一个值
+  const formRef = useRef();
 
   if (!formRef.current) {
     if (form) {
@@ -105,8 +112,5 @@ function useForm(form) {
       formRef.current = formStore.getForm();
     }
   }
-
   return [formRef.current];
 }
-
-export default useForm;

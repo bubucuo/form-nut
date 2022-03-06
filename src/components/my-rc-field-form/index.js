@@ -3,7 +3,8 @@ import _Form from "./Form";
 import Field from "./Field";
 import useForm from "./useForm";
 
-const Form = _Form; //React.forwardRef(_Form);
+const Form = React.forwardRef(_Form); //_Form;
+
 Form.Field = Field;
 Form.useForm = useForm;
 
