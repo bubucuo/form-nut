@@ -1,0 +1,20 @@
+const toString = Object.prototype.toString;
+const isType = (type) => (obj) => getType(obj) === `[object ${type}]`;
+export const getType = (obj) => toString.call(obj);
+export const isFn = (val) => typeof val === "function";
+export const isArr = Array.isArray;
+export const isPlainObj = isType("Object");
+export const isStr = isType("String");
+export const isBool = isType("Boolean");
+export const isNum = isType("Number");
+export const isMap = (val) => val && val instanceof Map;
+export const isSet = (val) => val && val instanceof Set;
+export const isWeakMap = (val) => val && val instanceof WeakMap;
+export const isWeakSet = (val) => val && val instanceof WeakSet;
+export const isNumberLike = (index) => isNum(index) || /^\d+$/.test(index);
+export const isObj = (val) => typeof val === "object";
+export const isRegExp = isType("RegExp");
+export const isReactElement = (obj) => obj && obj["$$typeof"] && obj["_owner"];
+export const isHTMLElement = (target) => {
+  return Object.prototype.toString.call(target).indexOf("HTML") > -1;
+};
