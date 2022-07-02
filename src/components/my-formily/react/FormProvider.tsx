@@ -1,21 +1,18 @@
-import React from 'react'
-import { FormContext } from './context'
-import { useAttach } from './hooks'
-import { Form } from "@formily/core";
+import React from "react";
+import {ContextCleaner, FormContext} from "./context";
+import {useAttach} from "./hooks";
+import {IProviderProps} from "./types";
 
-
-interface FormProviderProps {
-  form: Form,
-  children: React.ReactElement
+interface FormProviderProps extends IProviderProps {
+  children: React.ReactElement[];
 }
 
-export const FormProvider: React.FC<FormProviderProps> = props => {
+export const FormProvider: React.FC<FormProviderProps> = (props) => {
+  const form = useAttach(props.form);
 
-  const form = useAttach(props.form)
-
-  return <FormContext.Provider value={form}>
-    {props.children}
-  </FormContext.Provider>
-
-
+  return (
+    <ContextCleaner>
+      <FormContext.Provider value={form}>{props.children}</FormContext.Provider>
+    </ContextCleaner>
+  );
 };

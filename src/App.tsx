@@ -1,12 +1,13 @@
-import FormilyPage from "./pages/FormilyPage";
-import ReactivePage from "./pages/ReactivePage";
+import CorePage from "./pages/CorePage";
+// import ReactivePage from "./pages/ReactivePage";
 
 export default function App() {
   return (
     <div>
       {/* <ReactivePage/> */}
-      <FormilyPage />
+      {/* <FormilyPage /> */}
+
+      <CorePage />
     </div>
   );
 }
-

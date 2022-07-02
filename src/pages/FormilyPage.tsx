@@ -11,7 +11,9 @@ import {
 
 const form = createForm();
 
-export default function FormilyPage(props) {
+interface FormilyPageProps {}
+
+const FormilyPage: React.FC<FormilyPageProps> = (props) => {
   return (
     <div>
       <h3 className="red"> FormilyPage</h3>
@@ -33,4 +35,6 @@ export default function FormilyPage(props) {
       </FormProvider>
     </div>
   );
-}
+};
+
+export default FormilyPage;

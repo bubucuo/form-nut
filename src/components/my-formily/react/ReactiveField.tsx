@@ -1,115 +1,99 @@
-import React, { Fragment, useContext } from 'react';
+import React, {Fragment, useContext} from "react";
+import {toJS} from "@formily/reactive";
+import {observer} from "@formily/reactive-react";
+import {FormPath, isFn} from "@formily/shared";
+import {isVoidField, GeneralField, Form} from "@formily/core";
+// import {SchemaComponentsContext} from "../shared";
+// import {RenderPropsChildren} from "../types";
 
-
-import { observer } from '@formily/reactive-react';
-import { GeneralField, Form, isVoidField } from '@formily/core';
-import { RenderPropsChildren } from './types';
-import { isFn } from '../reactive/checkers';
-import { SchemaComponentsContext } from './context'
-import { FormPath } from '@formily/shared';
-import { toJS } from '@formily/reactive';
-
+import {RenderPropsChildren} from "./types";
+import {SchemaComponentsContext} from "./context";
 
 interface IReactiveFieldProps {
-  field: any //GeneralField
-  children?: RenderPropsChildren<GeneralField>
+  field: GeneralField;
+  children?: RenderPropsChildren<GeneralField>;
 }
 
-
-
 const mergeChildren = (
-
   children: RenderPropsChildren<GeneralField>,
   content: React.ReactNode
 ) => {
-  if (!children && !content) { return }
-  if (isFn(children)) { return }
-
-  return <Fragment>{children}{content}</Fragment>
-
-}
+  if (!children && !content) return;
+  if (isFn(children)) return;
+  return (
+    <Fragment>
+      {children}
+      {content}
+    </Fragment>
+  );
+};
 
 const isValidComponent = (target: any) =>
-  target && (typeof target === 'object' || typeof target === 'function')
+  target && (typeof target === "object" || typeof target === "function");
 
 const renderChildren = (
   children: RenderPropsChildren<GeneralField>,
   field?: GeneralField,
   form?: Form
-) => {
-  return isFn(children) ? children(field, form) : children
-}
+) => (isFn(children) ? children(field, form) : children);
 
 const ReactiveInternal: React.FC<IReactiveFieldProps> = (props) => {
-
-
-  const components = useContext(SchemaComponentsContext)
-
-
+  const components = useContext(SchemaComponentsContext);
   if (!props.field) {
-
-    return <Fragment>{renderChildren(props.children)}</Fragment>
+    return <Fragment>{renderChildren(props.children)}</Fragment>;
   }
-
-
-
-  const { field, children } = props
-
-  const content = mergeChildren(renderChildren(children, field, field.form), field.content ?? field.componentProps.children)
-
-
-
+  const field = props.field;
+  const content = mergeChildren(
+    renderChildren(props.children, field, field.form),
+    field.content ?? field.componentProps.children
+  );
+  if (field.display !== "visible") return null;
 
   const getComponent = (target: any) => {
-    return isValidComponent(target) ? target : FormPath.getIn(components, target) ?? target
-  }
-
-
+    return isValidComponent(target)
+      ? target
+      : FormPath.getIn(components, target) ?? target;
+  };
 
   const renderDecorator = (children: React.ReactNode) => {
     if (!field.decoratorType) {
-
-      return <Fragment>{children}</Fragment>
+      return <Fragment>{children}</Fragment>;
     }
 
-    const res =
-      React.createElement(getComponent(field.decoratorType), toJS(field.decoratorProps), children)
-
-    return res
-  }
-
-
+    return React.createElement(
+      getComponent(field.decoratorType),
+      toJS(field.decoratorProps),
+      children
+    );
+  };
 
   const renderComponent = () => {
-    if (!field.componentType) return content
-    const value = !isVoidField(field) ? field.value : undefined
+    if (!field.componentType) return content;
+    const value = !isVoidField(field) ? field.value : undefined;
     const onChange = !isVoidField(field)
       ? (...args: any[]) => {
-
-
-        console.log('val', args[0].target.value); //sy-log
-        field.onInput(...args)
-        field.componentProps?.onChange?.(...args)
-      }
-      : field.componentProps?.onChange
+          field.onInput(...args);
+          field.componentProps?.onChange?.(...args);
+        }
+      : field.componentProps?.onChange;
     const onFocus = !isVoidField(field)
       ? (...args: any[]) => {
-        field.onFocus(...args)
-        field.componentProps?.onFocus?.(...args)
-      }
-      : field.componentProps?.onFocus
+          field.onFocus(...args);
+          field.componentProps?.onFocus?.(...args);
+        }
+      : field.componentProps?.onFocus;
     const onBlur = !isVoidField(field)
       ? (...args: any[]) => {
-        field.onBlur(...args)
-        field.componentProps?.onBlur?.(...args)
-      }
-      : field.componentProps?.onBlur
+          field.onBlur(...args);
+          field.componentProps?.onBlur?.(...args);
+        }
+      : field.componentProps?.onBlur;
     const disabled = !isVoidField(field)
-      ? field.pattern === 'disabled' || field.pattern === 'readPretty'
-      : undefined
+      ? field.pattern === "disabled" || field.pattern === "readPretty"
+      : undefined;
     const readOnly = !isVoidField(field)
-      ? field.pattern === 'readOnly'
-      : undefined
+      ? field.pattern === "readOnly"
+      : undefined;
     return React.createElement(
       getComponent(field.componentType),
       {
@@ -122,16 +106,14 @@ const ReactiveInternal: React.FC<IReactiveFieldProps> = (props) => {
         onBlur,
       },
       content
-    )
-  }
+    );
+  };
 
-  return renderDecorator(renderComponent())
+  return renderDecorator(renderComponent());
+};
 
+ReactiveInternal.displayName = "ReactiveField";
 
-
-
-
-}
-
-
-export const ReactiveField = observer(ReactiveInternal, { forwardRef: true })
+export const ReactiveField = observer(ReactiveInternal, {
+  forwardRef: true,
+});
