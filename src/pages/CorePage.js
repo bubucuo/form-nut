@@ -1,5 +1,5 @@
 import {useMemo} from "react";
-import {createForm, setValidateLanguage} from "@formily/core";
+import {createForm} from "@formily/core";
 import {
   FormProvider,
   FormConsumer,
@@ -10,11 +10,6 @@ import Input from "../components/Input";
 
 export default function CorePage(props) {
   const form = useMemo(() => createForm({validateFirst: true}));
-  console.log(
-    "%c [ form ]-13",
-    "font-size:13px; background:pink; color:#bf2c9f;",
-    form
-  );
 
   const createPasswordEqualValidate = (equalName) => (field) => {
     if (

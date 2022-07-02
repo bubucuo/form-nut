@@ -8,6 +8,11 @@ const Field = observer((props) => {
 
   // 创建字段
   const field = form.createField(props);
+  console.log(
+    "%c [ field ]-11",
+    "font-size:13px; background:pink; color:#bf2c9f;",
+    field
+  );
 
   useEffect(() => {
     // 挂载
