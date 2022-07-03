@@ -1,22 +1,13 @@
-import React from "react";
 import {createForm} from "@formily/core";
-// import {FormProvider, FormConsumer, Field} from "@formily/react";
+import {FormProvider, FormConsumer, Field} from "@formily/react";
 import {FormItem, Input, FormButtonGroup, Submit} from "@formily/antd";
-
-import {
-  FormProvider,
-  FormConsumer,
-  Field,
-} from "../components/my-formily/react";
 
 const form = createForm();
 
-interface FormilyPageProps {}
-
-const FormilyPage: React.FC<FormilyPageProps> = (props) => {
+const FormilyPage = (props) => {
   return (
     <div>
-      <h3 className="red"> FormilyPage</h3>
+      <h3> FormilyPage</h3>
       <FormProvider form={form}>
         <Field
           name="input"
@@ -29,9 +20,9 @@ const FormilyPage: React.FC<FormilyPageProps> = (props) => {
         <FormConsumer>
           {() => <div>实时响应：{form.values.input}</div>}
         </FormConsumer>
-        {/* <FormButtonGroup>
+        <FormButtonGroup>
           <Submit onSubmit={console.log}>提交</Submit>
-        </FormButtonGroup> */}
+        </FormButtonGroup>
       </FormProvider>
     </div>
   );
