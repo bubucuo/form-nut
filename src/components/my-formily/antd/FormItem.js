@@ -1,6 +1,5 @@
+import {observer, FieldContext} from "@/which";
 import {useContext} from "react";
-import {observer, FieldContext} from "../../../which-formily";
-// import {observer, FieldContext} from "@/which-formily";
 
 const FormItem = observer(({children}) => {
   const field = useContext(FieldContext);

@@ -1,9 +1,9 @@
-import ReactPage from "./pages/ReactPage";
+import AntdPage from "./pages/AntdPage";
 
 export default function App() {
   return (
     <div>
-      <ReactPage />
+      <AntdPage />
     </div>
   );
 }

@@ -1,8 +1,12 @@
-import {createForm} from "@formily/core";
-import {FormProvider, Field, FormConsumer} from "@formily/react";
-// import {FormItem, Input, Submit} from "@formily/antd";
-
-import {FormItem, Input, Submit} from "../components/my-formily/antd";
+import {
+  createForm,
+  FormProvider,
+  Field,
+  FormConsumer,
+  FormItem,
+  Input,
+  Submit,
+} from "@/which";
 
 const form = createForm();
 
@@ -18,10 +22,11 @@ const createPasswordEqualValidate = (equalName) => (field) => {
   }
 };
 
-export default function ReactPage(props) {
+// 注册
+export default function AntdPage(props) {
   return (
     <div>
-      <h3>ReactPage</h3>
+      <h3>AntdPage</h3>
       <FormProvider form={form}>
         <Field
           name="name"
@@ -37,10 +42,29 @@ export default function ReactPage(props) {
           required
           decorator={[FormItem]}
           component={[Input, {type: "password", placeholder: "Please Input"}]}
-          // reactions={createPasswordEqualValidate("confirm_password")}
+          reactions={createPasswordEqualValidate("confirm_password")}
+        />
+        <Field
+          name="confirm_password"
+          title="Confirm Password"
+          required
+          decorator={[FormItem]}
+          component={[Input, {type: "password", placeholder: "Please Input"}]}
+          reactions={createPasswordEqualValidate("password")}
         />
 
-        <Submit onSubmit={console.log}>提交</Submit>
+        <Submit
+          onSubmit={(res) => {
+            console.log(res); //sy-log
+          }}
+          onSubmitSuccess={() => {
+            console.log("omg success"); //sy-log
+          }}
+          onSubmitFailed={() => {
+            console.log("omg failed"); //sy-log
+          }}>
+          提交
+        </Submit>
 
         <div>
           <FormConsumer>{() => form.values.name}</FormConsumer>
