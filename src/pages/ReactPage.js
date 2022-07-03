@@ -1,6 +1,8 @@
 import {createForm} from "@formily/core";
 import {FormProvider, Field, FormConsumer} from "@formily/react";
-import {FormItem, Input, Submit} from "@formily/antd";
+// import {FormItem, Input, Submit} from "@formily/antd";
+
+import {FormItem, Input, Submit} from "../components/my-formily/antd";
 
 const form = createForm();
 
