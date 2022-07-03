@@ -1,9 +1,9 @@
-import FormilyPage from "./pages/FormilyPage";
+import ReactPage from "./pages/ReactPage";
 
 export default function App() {
   return (
     <div>
-      <FormilyPage />
+      <ReactPage />
     </div>
   );
 }
