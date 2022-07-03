@@ -67,7 +67,7 @@ export default function AntdPage(props) {
         </Submit>
 
         <div>
-          <FormConsumer>{() => form.values.name}</FormConsumer>
+          <FormConsumer>{(form) => values.name}</FormConsumer>
         </div>
       </FormProvider>
     </div>
