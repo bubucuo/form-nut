@@ -1,5 +1,5 @@
-import {useObserver} from "./hooks";
 import {memo} from "react";
+import {useObserver} from "./hooks";
 
 export default function observer(component) {
   const WrappedComponent = (props) => {
