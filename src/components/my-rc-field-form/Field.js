@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import FieldContext from "./FieldContext";
 // export default class Field extends Component {
 //   static contextType = FieldContext;
@@ -36,10 +36,13 @@ import FieldContext from "./FieldContext";
 // }
 
 export default function Field(props) {
-  const { children, name } = props;
+  const {children, name} = props;
 
-  const { getFieldValue, setFieldsValue, registerFieldEntities } =
-    React.useContext(FieldContext);
+  const {
+    getFieldValue,
+    setFieldsValue,
+    registerFieldEntities,
+  } = React.useContext(FieldContext);
 
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
@@ -48,6 +51,7 @@ export default function Field(props) {
       props,
       onStoreChange: forceUpdate,
     });
+    return unregister;
   }, []);
 
   const getControlled = () => {
@@ -56,7 +60,7 @@ export default function Field(props) {
       onChange: (e) => {
         const newValue = e.target.value;
         // set state
-        setFieldsValue({ [name]: newValue });
+        setFieldsValue({[name]: newValue});
       },
     };
   };
