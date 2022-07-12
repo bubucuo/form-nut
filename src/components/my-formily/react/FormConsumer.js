@@ -1,11 +1,9 @@
 import {observer} from "@/which";
-import {useContext} from "react";
 import {FormContext} from "./context";
+import {useContext} from "react";
 
 const FormConsumer = observer((props) => {
   const form = useContext(FormContext);
-  const children = props.children(form);
-  return children;
+  return props.children(form);
 });
-
 export default FormConsumer;
