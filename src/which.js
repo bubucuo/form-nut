@@ -6,6 +6,7 @@ import {
   define,
   action,
   toJS,
+  autorun,
 } from "@formily/reactive";
 // import {
 //   FormProvider,
@@ -61,6 +62,7 @@ export {
   define,
   action,
   toJS,
+  autorun,
   // reactive-react
   observer,
   // antd

@@ -1,5 +1,6 @@
 import Field from "./Field";
 import {define, observable} from "@/which";
+import {batchSubmit, batchValidate} from "./internals";
 
 export default class Form {
   constructor(props) {
@@ -13,6 +14,8 @@ export default class Form {
     this.initialValues = props.initialValues;
     // 所有field的value
     this.values = {...props.initialValues};
+
+    this.errors = [];
   };
 
   makeObservable = () => {
@@ -33,11 +36,10 @@ export default class Form {
 
   onMount = () => {};
   onUnmount = () => {};
-  submit = () => {
-    console.log(
-      "%c [  ]-38",
-      "font-size:13px; background:pink; color:#bf2c9f;",
-      this.values
-    );
+  validate = () => {
+    return batchValidate(this);
+  };
+  submit = (onSubmit) => {
+    return batchSubmit(this, onSubmit);
   };
 }

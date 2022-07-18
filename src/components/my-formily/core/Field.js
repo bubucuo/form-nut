@@ -1,4 +1,5 @@
 import {define, observable} from "@/which";
+import {createReactions, validateSelf} from "./internals";
 
 // 数据层的Field
 export default class Field {
@@ -16,7 +17,10 @@ export default class Field {
 
     this.value = this.form.values[name];
 
+    this.query = {required: props.required};
+
     this.makeObservable();
+    this.makeReactive();
   }
 
   makeObservable = () => {
@@ -26,6 +30,10 @@ export default class Field {
     });
   };
 
+  makeReactive = () => {
+    createReactions(this);
+  };
+
   onInput = (e) => {
     const newValue = e.target.value;
 
@@ -33,5 +41,6 @@ export default class Field {
     this.form.values[this.props.name] = newValue;
 
     // todo 校验
+    validateSelf(this);
   };
 }
