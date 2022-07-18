@@ -1,11 +1,9 @@
-import ReactivePage from "./pages/ReactivePage";
-import ReactPage from "./pages/ReactPage";
+import CorePage from "./pages/CorePage";
 
 export default function App() {
   return (
     <div>
-      <ReactivePage />
-      <ReactPage />
+      <CorePage />
     </div>
   );
 }
