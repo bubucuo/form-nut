@@ -1,13 +1,13 @@
 // import {createForm} from "@formily/core";
-import {
-  observable,
-  Tracker,
-  batch,
-  define,
-  action,
-  toJS,
-  autorun,
-} from "@formily/reactive";
+// import {
+//   observable,
+//   Tracker,
+//   batch,
+//   define,
+//   action,
+//   toJS,
+//   autorun,
+// } from "@formily/reactive";
 // import {
 //   FormProvider,
 //   Field,
@@ -32,6 +32,16 @@ import {
 } from "@formily/shared";
 
 // todo
+import {
+  observable,
+  Tracker,
+  batch,
+  define,
+  action,
+  toJS,
+  autorun,
+} from "@/components/my-formily/reactive";
+
 import {createForm} from "@/components/my-formily/core";
 
 import {observer} from "@/components/my-formily/reactive-react";

@@ -12,6 +12,12 @@ const ReactivePage = observer(() => {
       <button
         onClick={() => {
           obj.count++;
+
+          console.log(
+            "%c [  ]-17",
+            "font-size:13px; background:pink; color:#bf2c9f;",
+            obj
+          );
         }}>
         {obj.count}
       </button>
