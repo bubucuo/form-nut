@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.1.10",
     "antd": "^4.7.3",
     "craco-less": "^1.17.0",
+    "rc-form": "^2.4.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "4.0.0",
